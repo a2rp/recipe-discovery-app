@@ -1,0 +1,90 @@
+.recipeDiscoveryApp {
+    .recipeHero { display: flex; align-items: center; justify-content: space-between; gap: 25px; padding: 18px 0 24px; }
+    .label { color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: .16em; }
+    .recipeHero h1 { margin-top: 10px; font-family: Georgia, serif; font-size: clamp(42px, 5vw, 64px); font-weight: 500; line-height: .98; letter-spacing: -.045em; }
+    .recipeHero h1 span { color: #bb593c; font-style: italic; }
+    .description { margin-top: 14px; color: var(--muted); font-size: 13px; }
+    .openBook { display: grid; width: 192px; justify-items: center; gap: 3px; padding: 18px; border: 1px solid #edcfaf; border-radius: 14px; color: #81523b; background: #fae7d2; }
+    .openBook svg { width: 24px; height: 24px; margin-bottom: 3px; }
+    .openBook strong { font-family: Georgia, serif; font-size: 30px; line-height: 1; }
+    .openBook span { font-size: 10px; }
+    .discoveryTools { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 13px; background: var(--card); }
+    .searchBox { display: flex; flex: 1; align-items: center; gap: 8px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); background: var(--paper); }
+    .searchBox svg { width: 15px; flex: 0 0 15px; }
+    .searchBox input { width: 100%; border: 0; outline: 0; background: transparent; font-size: 11px; }
+    .categorySelect { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 10px; }
+    .categorySelect select { min-height: 37px; padding: 0 27px 0 9px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); background: #fff; font-size: 10px; }
+    .savedButton, .savedButtonActive { display: flex; min-height: 37px; align-items: center; gap: 7px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); background: #fff; font-size: 10px; font-weight: 700; white-space: nowrap; }
+    .savedButton svg, .savedButtonActive svg { width: 14px; }
+    .savedButton span, .savedButtonActive span { display: grid; min-width: 18px; height: 18px; place-items: center; border-radius: 50%; background: #f4eee8; font-size: 9px; }
+    .savedButtonActive { border-color: var(--accent); color: #fff; background: var(--accent); }
+    .contentLayout { display: grid; grid-template-columns: minmax(0, 1fr) 280px; align-items: start; gap: 15px; margin-top: 15px; }
+    .recipeResults { min-width: 0; }
+    .resultsHeading { display: flex; align-items: end; justify-content: space-between; gap: 15px; margin: 0 0 10px; }
+    .resultsHeading h2 { font-family: Georgia, serif; font-size: 21px; font-weight: 500; }
+    .resultsHeading p, .resultsHeading > span { color: var(--muted); font-size: 10px; }
+    .recipeGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .recipeCard { overflow: hidden; border: 1px solid var(--line); border-radius: 13px; background: var(--card); }
+    .recipeArt { position: relative; display: grid; height: 112px; place-items: center; overflow: hidden; background: radial-gradient(circle at 50% 95%, #d8784f88 0 18%, transparent 19%), linear-gradient(135deg, #f8ddb9, #f3c99b); }
+    .recipeArt span { z-index: 1; filter: drop-shadow(0 7px 5px #5b3d2840); font-size: 46px; }
+    .recipeArt > small { position: absolute; left: 10px; bottom: 9px; padding: 4px 7px; border-radius: 99px; color: #6f4e36; background: #fff8eddc; font-size: 8px; font-weight: 700; }
+    .recipeArt .favorite, .recipeArt .favoriteActive { position: absolute; top: 8px; right: 8px; display: grid; width: 29px; height: 29px; place-items: center; border: 0; border-radius: 50%; color: #664b3c; background: #fffdf3; }
+    .recipeArt .favoriteActive { color: #fff; background: var(--accent); }
+    .favorite svg, .favoriteActive svg { width: 14px; }
+    .tomato { background: radial-gradient(circle at 50% 48%, #db6b50 0 27%, transparent 28%), linear-gradient(140deg, #fae9c9, #d7d69b); }
+    .noodle { background: radial-gradient(circle at 51% 47%, #f1c76f 0 31%, transparent 32%), linear-gradient(140deg, #d8e3d0, #f4e2b6); }
+    .toast { background: radial-gradient(circle at 50% 50%, #dfbd8d 0 29%, transparent 30%), linear-gradient(140deg, #e5e9d2, #d9c5a8); }
+    .taco { background: radial-gradient(circle at 50% 50%, #e4aa58 0 30%, transparent 31%), linear-gradient(140deg, #e9cfaa, #f1e4bc); }
+    .soup { background: radial-gradient(circle at 50% 49%, #db945c 0 29%, transparent 30%), linear-gradient(140deg, #edcdb2, #eee3c8); }
+    .recipeInfo { padding: 11px; }
+    .meta { display: flex; justify-content: space-between; color: var(--muted); font-size: 9px; }
+    .meta span:first-child { display: flex; align-items: center; gap: 4px; }
+    .meta svg { width: 12px; }
+    .recipeInfo h3 { min-height: 39px; margin-top: 6px; font-family: Georgia, serif; font-size: 15px; font-weight: 600; line-height: 1.22; }
+    .recipeInfo p { color: var(--muted); font-size: 9px; }
+    .openRecipe { display: flex; width: 100%; min-height: 31px; align-items: center; justify-content: space-between; margin-top: 10px; padding: 0 9px; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); background: #fffaf1; font-size: 10px; font-weight: 700; }
+    .openRecipe svg { width: 13px; color: var(--accent); }
+    .openRecipe:hover { box-shadow: 0 3px 10px #693c2715; }
+    .emptyState { grid-column: 1 / -1; padding: 28px; color: var(--muted); font-size: 12px; text-align: center; }
+    .cookingNote, .detailPanel { padding: 19px; border: 1px solid #e6d7c6; border-radius: 15px; background: #fbf0e1; }
+    .noteIcon { display: grid; width: 39px; height: 39px; place-items: center; margin-bottom: 16px; border-radius: 12px; color: #fff; background: var(--accent); font-size: 20px; }
+    .cookingNote h2 { margin-top: 8px; font-family: Georgia, serif; font-size: 24px; font-weight: 500; line-height: 1.05; }
+    .cookingNote > p:not(.label) { margin-top: 10px; color: var(--muted); font-size: 11px; }
+    .cookingNote button { display: flex; min-height: 34px; align-items: center; gap: 7px; margin-top: 18px; padding: 0 11px; border: 0; border-radius: 7px; color: #fff; background: #6a4736; font-size: 10px; font-weight: 700; }
+    .cookingNote button svg { width: 13px; }
+    .detailPanel { background: #fffaf2; }
+    .detailHead { display: flex; align-items: start; justify-content: space-between; gap: 10px; }
+    .detailHead span { color: var(--accent); font-size: 8px; font-weight: 800; letter-spacing: .13em; }
+    .detailHead h2 { margin-top: 4px; font-family: Georgia, serif; font-size: 20px; line-height: 1.1; }
+    .closeButton { display: grid; width: 29px; height: 29px; place-items: center; border: 1px solid var(--line); border-radius: 7px; background: white; }
+    .closeButton svg { width: 15px; }
+    .detailMeta { display: flex; gap: 13px; margin: 13px 0; padding: 9px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--muted); font-size: 9px; }
+    .detailMeta span { display: flex; align-items: center; gap: 4px; }
+    .detailMeta svg { width: 12px; }
+    .detailPanel h3 { margin-top: 12px; font-size: 11px; font-weight: 800; }
+    .detailPanel ul { display: grid; gap: 5px; margin-top: 6px; color: var(--muted); font-size: 10px; }
+    .detailPanel ol { display: grid; gap: 8px; margin-top: 7px; }
+    .detailPanel li { display: flex; align-items: flex-start; gap: 7px; color: var(--muted); font-size: 10px; }
+    .detailPanel li span { flex: 0 0 19px; display: grid; width: 19px; height: 19px; place-items: center; border-radius: 50%; color: #fff; background: #a76548; font-size: 8px; }
+    .shoppingButton { display: flex; width: 100%; min-height: 36px; align-items: center; justify-content: center; gap: 7px; margin-top: 14px; border: 0; border-radius: 8px; color: #fff; background: #684433; font-size: 10px; font-weight: 700; }
+    .shoppingButton svg { width: 14px; }
+    .notice { margin-top: 7px; color: #4b7958; font-size: 9px; text-align: center; }
+    .savedStrip { display: flex; align-items: center; gap: 9px; margin-top: 14px; padding: 12px 14px; border: 1px solid #edcfaf; border-radius: 10px; color: #82553e; background: #fae7d2; font-size: 11px; }
+    .savedStrip svg { width: 15px; }
+    .savedStrip button { margin-left: auto; border: 0; color: #77452e; background: transparent; font-size: 10px; font-weight: 750; text-decoration: underline; }
+    @media (max-width: 1050px) { .contentLayout { grid-template-columns: 1fr; } .cookingNote { display: grid; grid-template-columns: 47px 1fr; column-gap: 10px; } .noteIcon { grid-row: span 2; } .cookingNote .label, .cookingNote h2 { grid-column: 2; } .cookingNote > p:not(.label), .cookingNote button { grid-column: 1 / -1; } }
+    @media (max-width: 650px) {
+        .recipeHero { align-items: flex-start; flex-direction: column; }
+        .openBook { width: 100%; grid-template-columns: 30px auto 1fr; justify-items: start; align-items: center; }
+        .openBook svg { margin: 0; }
+        .discoveryTools { align-items: stretch; flex-direction: column; }
+        .categorySelect { justify-content: space-between; }
+        .categorySelect select { flex: 1; }
+        .savedButton, .savedButtonActive { justify-content: center; }
+        .resultsHeading { align-items: flex-start; flex-direction: column; gap: 3px; }
+        .recipeGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .recipeArt { height: 96px; }
+        .recipeInfo { padding: 9px; }
+        .recipeInfo h3 { font-size: 13px; }
+    }
+}
