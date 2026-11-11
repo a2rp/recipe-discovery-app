@@ -69,6 +69,7 @@
     .shoppingButton { display: flex; width: 100%; min-height: 36px; align-items: center; justify-content: center; gap: 7px; margin-top: 14px; border: 0; border-radius: 8px; color: #fff; background: #684433; font-size: 10px; font-weight: 700; }
     .shoppingButton svg { width: 14px; }
     .notice { margin-top: 7px; color: #4b7958; font-size: 9px; text-align: center; }
+    .storageWarning { margin: 10px 0 0; padding: 8px 11px; border: 1px solid #e7c6a5; border-radius: 8px; color: #81523b; background: #fff2e4; font-size: 10px; }
     .savedStrip { display: flex; align-items: center; gap: 9px; margin-top: 14px; padding: 12px 14px; border: 1px solid #edcfaf; border-radius: 10px; color: #82553e; background: #fae7d2; font-size: 11px; }
     .savedStrip svg { width: 15px; }
     .savedStrip button { margin-left: auto; border: 0; color: #77452e; background: transparent; font-size: 10px; font-weight: 750; text-decoration: underline; }

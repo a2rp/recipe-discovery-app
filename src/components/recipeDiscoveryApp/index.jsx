@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { FiBookOpen, FiClock, FiHeart, FiSearch, FiShoppingBag, FiX } from "react-icons/fi";
 import styles from "./styles.module.css";
 
@@ -12,44 +12,72 @@ const recipes = [
     { id: 5, name: "Crispy potato tacos", category: "Family", time: 35, servings: 4, difficulty: "Steady", art: "taco", icon: "🌮", ingredients: ["500 g small potatoes", "8 corn tortillas", "1 avocado", "1 lime"], steps: ["Roast the potatoes with oil and smoked paprika until crisp.", "Mash avocado with lime and a pinch of salt.", "Fill warm tortillas with potatoes and avocado."] },
     { id: 6, name: "Coconut lentil soup", category: "One pot", time: 40, servings: 4, difficulty: "Easy", art: "soup", icon: "🍲", ingredients: ["1 cup red lentils", "1 can coconut milk", "3 cups vegetable stock", "1 tsp curry powder"], steps: ["Rinse the lentils and add them to a pot with stock and curry powder.", "Simmer until the lentils are tender, about twenty minutes.", "Stir in coconut milk and warm through."] },
 ];
+const recipeIds = new Set(recipes.map((recipe) => recipe.id));
 const readSaved = () => {
+    let value;
     try {
-        const value = localStorage.getItem(savedKey);
-        return value ? JSON.parse(value) : [2, 5];
+        value = localStorage.getItem(savedKey);
     } catch {
-        return [2, 5];
+        return { ids: [2, 5], storageAvailable: false };
+    }
+    if (value === null) return { ids: [2, 5], storageAvailable: true };
+    try {
+        const parsed = JSON.parse(value);
+        const ids = Array.isArray(parsed)
+            ? [...new Set(parsed.filter((id) => Number.isSafeInteger(id) && recipeIds.has(id)))]
+            : [];
+        return { ids, storageAvailable: true };
+    } catch {
+        return { ids: [], storageAvailable: true };
     }
 };
 const readShoppingList = () => {
-    try {
-        const value = localStorage.getItem(shoppingKey);
-        return value ? JSON.parse(value) : [];
-    } catch {
-        return [];
-    }
+    const value = localStorage.getItem(shoppingKey);
+    if (value === null) return [];
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [];
 };
 
 const RecipeDiscoveryApp = () => {
-    const [saved, setSaved] = useState(readSaved);
+    const [savedState, setSavedState] = useState(readSaved);
+    const { ids: saved, storageAvailable } = savedState;
     const [query, setQuery] = useState("");
     const [category, setCategory] = useState("All recipes");
     const [savedOnly, setSavedOnly] = useState(false);
     const [selected, setSelected] = useState(null);
     const [notice, setNotice] = useState("");
-    useEffect(() => localStorage.setItem(savedKey, JSON.stringify(saved)), [saved]);
+    const toggleSaved = (id) => {
+        const next = saved.includes(id) ? saved.filter((value) => value !== id) : [...saved, id];
+        try {
+            localStorage.setItem(savedKey, JSON.stringify(next));
+            setSavedState({ ids: next, storageAvailable: true });
+        } catch {
+            setSavedState({ ids: next, storageAvailable: false });
+        }
+    };
 
     const categories = ["All recipes", ...new Set(recipes.map((recipe) => recipe.category))];
     const visibleRecipes = useMemo(() => recipes.filter((recipe) => {
         const text = (recipe.name + " " + recipe.category + " " + recipe.ingredients.join(" ")).toLowerCase();
         return text.includes(query.toLowerCase()) && (category === "All recipes" || recipe.category === category) && (!savedOnly || saved.includes(recipe.id));
     }), [query, category, savedOnly, saved]);
-    const toggleSaved = (id) => setSaved((current) => current.includes(id) ? current.filter((value) => value !== id) : [...current, id]);
     const addToShoppingList = () => {
         if (!selected) return;
-        const current = readShoppingList();
-        const additions = selected.ingredients.map((ingredient, index) => ({ id: Date.now() + index, name: ingredient, amount: "1", aisle: "Pantry", price: 0, checked: false }));
-        localStorage.setItem(shoppingKey, JSON.stringify([...current, ...additions]));
-        setNotice(selected.ingredients.length + " ingredients added to Market Day.");
+        try {
+            const current = readShoppingList();
+            const additions = selected.ingredients.map((ingredient, index) => ({
+                id: globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${index}-${Math.random().toString(36).slice(2)}`,
+                name: ingredient,
+                amount: "1",
+                aisle: "Pantry",
+                price: 0,
+                checked: false,
+            }));
+            localStorage.setItem(shoppingKey, JSON.stringify([...current, ...additions]));
+            setNotice(selected.ingredients.length + " ingredients added to Market Day.");
+        } catch {
+            setNotice("Could not update the grocery list. Check browser storage and try again.");
+        }
     };
 
     return (
@@ -63,6 +91,7 @@ const RecipeDiscoveryApp = () => {
                 <label className={styles.categorySelect}><span>Cook by</span><select value={category} onChange={(event) => setCategory(event.target.value)}>{categories.map((value) => <option key={value}>{value}</option>)}</select></label>
                 <button type="button" className={savedOnly ? styles.savedButtonActive : styles.savedButton} aria-pressed={savedOnly} onClick={() => setSavedOnly(!savedOnly)}><FiHeart aria-hidden="true" /> Saved recipes <span>{saved.length}</span></button>
             </div>
+            {!storageAvailable && <p className={styles.storageWarning} role="status">Saved recipes are only available until you leave this page because browser storage is unavailable.</p>}
             <div className={styles.contentLayout}>
                 <section className={styles.recipeResults} aria-label="Recipes">
                     <div className={styles.resultsHeading}><div><h2>{savedOnly ? "Your saved recipes" : "Good things to make"}</h2><p>{visibleRecipes.length} recipes to explore</p></div><span>All times are hands-on estimates</span></div>
@@ -80,7 +109,7 @@ const RecipeDiscoveryApp = () => {
                     <h3>What you need</h3><ul>{selected.ingredients.map((ingredient) => <li key={ingredient}>{ingredient}</li>)}</ul>
                     <h3>Make it</h3><ol>{selected.steps.map((step, index) => <li key={step}><span>{index + 1}</span><p>{step}</p></li>)}</ol>
                     <button type="button" className={styles.shoppingButton} onClick={addToShoppingList}><FiShoppingBag aria-hidden="true" /> Add ingredients to grocery list</button>
-                    {notice && <p className={styles.notice}>{notice}</p>}
+                    {notice && <p className={styles.notice} role="status">{notice}</p>}
                 </aside> : <aside className={styles.cookingNote}><div className={styles.noteIcon}>✳</div><p className={styles.label}>A GOOD PLACE TO START</p><h2>Pick a recipe<br />that fits tonight.</h2><p>Choose any card to see ingredients and step-by-step instructions. Save recipes to make them easy to find again.</p><button type="button" onClick={() => setCategory("Quick")}>Show quick meals <FiClock aria-hidden="true" /></button></aside>}
             </div>
             <section className={styles.savedStrip} id="saved"><FiHeart aria-hidden="true" /><span>{saved.length} recipes saved for another day</span><button type="button" onClick={() => { setCategory("All recipes"); setSavedOnly(true); }}>See saved</button></section>
